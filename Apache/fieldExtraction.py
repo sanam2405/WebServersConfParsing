@@ -12,6 +12,7 @@ with make_loader(**options) as loader:
 
 
 ifModules = dict()
+fields = dict()
 
 def ifModulesCaller():
         
@@ -39,22 +40,28 @@ def printAllFields():
 
 def getFileAccessibility():
     fileAccessibility  = subprocess.getoutput('ls -l myhttpd.conf')
-    print(fileAccessibility)
+    fields['file_accessibility'] = fileAccessibility
+
 
 # printAllFields()
 ifModulesCaller()
+getFileAccessibility()
+
+
+fields['listening_port'] = config['Listen']
+fields['user'] = ifModules['unixd_module']['User']
+fields['group'] = ifModules['unixd_module']['Group']
+fields['server_name'] = config['ServerName']
+fields['error_log_directory'] = config['ErrorLog']
+fields['log_level'] = config['LogLevel']
+fields['log_format'] = ifModules['log_config_module']['LogFormat']
+fields['custom_log_config'] = ifModules['log_config_module']['CustomLog']
+fields['alias_web_path'] = ifModules['alias_module']['ScriptAlias']
+
 printLine()
 print("REQUIRED FIELDS ARE")
 printLine()
-
-print("Listening to PORT : ",config['Listen'])
-print("USER : ",ifModules['unixd_module']['User'])
-print('GROUP : ',ifModules['unixd_module']['Group'])
-print("SERVER NAME : ",config['ServerName'])
-print("ERROR LOG DIRECTORY : ",config['ErrorLog'])
-print("LOG LEVEL : ", config['LogLevel'])
-print("LOG FORMAT : ", ifModules['log_config_module']['LogFormat'])
-print("CUSTOM LOG CONFIG : ", ifModules['log_config_module']['CustomLog'])
-print("ALIAS WEB PATH X : ",ifModules['alias_module']['ScriptAlias'])
-getFileAccessibility()
-printLine()
+for items in fields:
+        print("KEY : ",items)
+        print("VALUE : ",fields[items])
+        printLine()
