@@ -21,13 +21,11 @@ def printAllFields():
 
 def getFileAccessibility():
     fileAccessibility  = subprocess.getoutput('ls -l nginx.conf')
-    print(fileAccessibility)
-    # tokens = fileAccessibility.split(' ')
-    # if(tokens[0]==)
+    fields['file_accessibility'] = fileAccessibility
 
 printLine()
-printAllFields()
-printLine()
+# printAllFields()
+# printLine()
 
 fields['file'] = payload['config'][0]['file']
 
@@ -47,14 +45,11 @@ for items in payload['config'][0]['parsed']:
                 for innerInnerItems in innerItems['block']:
                     fields[innerInnerItems['directive']] = innerInnerItems['args']
 
-
+getFileAccessibility()
 print("THE REQUIRED FIELDS ARE : ")
 printLine()
 for items in fields:
         print("KEY : ",items)
-        printLine()
         print("VALUE : ",fields[items])
         printLine()
 
-getFileAccessibility()
-printLine()
